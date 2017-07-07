@@ -4,6 +4,7 @@ bin/*
 !bin/data/
 bin/data/videos/*
 !bin/data/videos/.gitkeep
+!bin/data/videos/hpv/.gitkeep
 bin/data/gifs/*
 !bin/data/gifs/.gitkeep
 utils/bin/*
