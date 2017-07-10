@@ -8,6 +8,7 @@ int _h = 320;
 void ofApp::setup(){
 	ofSetWindowPosition(0, 0);
 	ofSetWindowShape(_w, _h);
+	ofSetWindowTitle("hpvPlayer");
 
 	/* Syphon setup */
 	//mainOutputSyphonServer.setName("Screen Output");
