@@ -9,6 +9,12 @@ bin/data/gifs/*
 !bin/data/gifs/.gitkeep
 utils/bin/*
 !utils/bin/syphoner.s6
+utils/src/screenCapture/output
+!utils/src/screenCapture/output/.gitkeep
 
 obj/*
 .idea/
+
+output.log
+output-hpv.log
+output-processing.log
