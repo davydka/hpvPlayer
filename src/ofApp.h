@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxHPVPlayer.h"
+#include "ofxMidi.h"
 //#include "ofxSyphon.h"
 
 class ofApp : public ofBaseApp
@@ -20,4 +21,7 @@ public:
     
 	//ofxSyphonServer mainOutputSyphonServer;
 	ofxHPVPlayer hpvPlayer;
+
+	ofxMidiIn midiIn;
+	ofxMidiMessage midiMessage;
 };

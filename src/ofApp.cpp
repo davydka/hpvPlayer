@@ -33,6 +33,9 @@ void ofApp::setup(){
 	 * hpvPlayer.setDoubleBuffered(true);
 	 */
 	//hpvPlayer.setDoubleBuffered(true);
+	
+
+	midiIn.listPorts();
 }
 
 //--------------------------------------------------------------
