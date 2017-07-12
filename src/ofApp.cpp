@@ -56,10 +56,9 @@ void ofApp::update(){
 
 	if(midiMessage.velocity != 0 && midiMessage.velocity != velHolder){
 		snprintf (noteHolder, 4, "%03d", midiMessage.pitch);
-		//noteHolder = setfill('0') << setw(5) << midiMessage.pitch;
-		//printf("%04i\n", number);
-		std::cout<<noteHolder<<std::endl;
-		std::cout<<midiMessage.pitch<<std::endl;
+
+		//std::cout<<noteHolder<<std::endl;
+		//std::cout<<midiMessage.pitch<<std::endl;
 
 		hpvPlayer.close();
 		if (hpvPlayer.load("videos/hpv/"+ofToString(noteHolder)+".hpv")){
