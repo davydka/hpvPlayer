@@ -5,3 +5,5 @@
 sleep 4
 wmctrl -r "hpvPlayer" -b add,above;
 
+
+sendmidi dev "mio MIDI 1" on 40 120; sleep 1; sendmidi dev "mio MIDI 1" off 40 0;

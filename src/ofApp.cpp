@@ -3,6 +3,11 @@
 int vidVar;
 int _w = 320;
 int _h = 320;
+int velHolder = 0;
+
+char noteHolder[4];
+
+//string noteHolder = 0;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -36,12 +41,33 @@ void ofApp::setup(){
 	
 
 	midiIn.listPorts();
+	midiIn.openPort(1);
+	//midiIn.openPort("from Max 1");
+	midiIn.ignoreTypes(false, false, false);
+	midiIn.addListener(this);
+	midiIn.setVerbose(false);
+	//snprintf (noteHolder, 6, "%06d", 0);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
 	/* Update happens on global level for all active players by HPV Manager */
 	HPV::Update();
+
+	if(midiMessage.velocity != 0 && midiMessage.velocity != velHolder){
+		snprintf (noteHolder, 4, "%03d", midiMessage.pitch);
+		//noteHolder = setfill('0') << setw(5) << midiMessage.pitch;
+		//printf("%04i\n", number);
+		std::cout<<noteHolder<<std::endl;
+		std::cout<<midiMessage.pitch<<std::endl;
+
+		hpvPlayer.close();
+		if (hpvPlayer.load("videos/hpv/"+ofToString(noteHolder)+".hpv")){
+			handleOpen();
+		}
+	}
+
+	velHolder = midiMessage.velocity;
 }
 
 //--------------------------------------------------------------
@@ -109,4 +135,8 @@ void ofApp::onHPVEvent(const HPVEvent& event)
 		default:
 			break;
 	}
+}
+
+void ofApp::newMidiMessage(ofxMidiMessage& msg) {
+	midiMessage = msg;
 }

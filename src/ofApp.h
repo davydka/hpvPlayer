@@ -5,8 +5,7 @@
 #include "ofxMidi.h"
 //#include "ofxSyphon.h"
 
-class ofApp : public ofBaseApp
-{
+class ofApp : public ofBaseApp, public ofxMidiListener{
 public:
 	void setup();
 	void update();
@@ -18,6 +17,8 @@ public:
 	void keyPressed(int key);
 
 	void handleOpen();
+
+	void newMidiMessage(ofxMidiMessage& eventArgs);
     
 	//ofxSyphonServer mainOutputSyphonServer;
 	ofxHPVPlayer hpvPlayer;
