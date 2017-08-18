@@ -35,6 +35,8 @@ void draw() {
   Rectangle r = new Rectangle(0, 30, 320, 320);
   BufferedImage img1 = robot.createScreenCapture(r);
   PImage img2 = new PImage(img1);
+  translate(0, 320);
+  rotate(radians(-90));
   image(img2, 0, 0);
   
   scrape();
