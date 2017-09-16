@@ -25,7 +25,7 @@ void ofApp::setup(){
 	hpvPlayer.init(HPV::NewPlayer());
 
 	/* Try to load file and start playback */
-	if(hpvPlayer.load("videos/hpv/fract.hpv")){
+	if(hpvPlayer.load("videos/output.hpv")){
 		handleOpen();
 	}
 
@@ -95,12 +95,12 @@ void ofApp::keyPressed(int key){
 	
 	hpvPlayer.close();
 	if(vidVar % 2){
-		if (hpvPlayer.load("videos/hpv/motor.hpv")){
+		if (hpvPlayer.load("videos/output.hpv")){
 			handleOpen();
 		}
 	} else {
 		hpvPlayer.close();
-		if (hpvPlayer.load("videos/hpv/fract.hpv")){
+		if (hpvPlayer.load("videos/output.hpv")){
 			handleOpen();
 		}
 	}
