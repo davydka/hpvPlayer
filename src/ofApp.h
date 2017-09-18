@@ -25,4 +25,23 @@ public:
 
 	ofxMidiIn midiIn;
 	ofxMidiMessage midiMessage;
+
+	ofVideoPlayer videoPlayer;
+	
+	/* LUT */
+	void loadLUT(string path);
+	void applyLUT(ofPixelsRef pix);
+	
+	bool doLUT;
+	int dirLoadIndex;
+	ofDirectory dir;
+	ofPoint lutPos;
+	ofPoint thumbPos;
+	
+	bool LUTloaded;
+	ofVec3f lut[32][32][32];
+	
+	ofImage lutImg;
+	/* END LUT */
+
 };

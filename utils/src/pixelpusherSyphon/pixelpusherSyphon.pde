@@ -18,14 +18,14 @@ PGraphics canvas;
 
 boolean ready_to_go = true;
 int lastPosition;
-int canvasW = 32;
-int canvasH = 32;
+int canvasW = 128;
+int canvasH = 128;
 TestObserver testObserver;
 
 
 
 void setup() {
-  size(32, 32, P2D);
+  size(128, 128, P2D);
   registry = new DeviceRegistry();
   testObserver = new TestObserver();
   registry.addObserver(testObserver);

@@ -31,8 +31,8 @@ void setup() {
  
 void draw() {
   background(0);
-  //Rectangle r = new Rectangle(mouseX, mouseY, width, height);
-  Rectangle r = new Rectangle(0, 30, 320, 320);
+  // Rectangle r = new Rectangle(0, 30, 320, 320);
+  Rectangle r = new Rectangle(0, 21, 320, 320);
   BufferedImage img1 = robot.createScreenCapture(r);
   PImage img2 = new PImage(img1);
   translate(0, 320);
