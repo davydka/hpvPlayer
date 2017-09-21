@@ -9,8 +9,6 @@ char noteHolder[4];
 ofPixels pix;
 ofImage img;
 
-//string noteHolder = 0;
-
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofSetLogLevel(OF_LOG_VERBOSE);
@@ -24,38 +22,17 @@ void ofApp::setup(){
 	/* Syphon setup */
 	//mainOutputSyphonServer.setName("Screen Output");
 
-	/* Init HPV Engine */
-	// HPV::InitHPVEngine();
-
-	/* Create resources for new player */
-	// hpvPlayer.init(HPV::NewPlayer());
-
-	/* Try to load file and start playback */
-	// if(hpvPlayer.load("videos/04.hpv")){
-	// 	handleOpen();
-	// }
-
-	/* Alternatively, if you experience playback stutter, try to toggle double-buffering true/false
-	 * Default: OFF
-	 *
-	 * hpvPlayer.setDoubleBuffered(true);
-	 */
-	//hpvPlayer.setDoubleBuffered(true);
-	
-
 	midiIn.listPorts();
-	midiIn.openPort(1);
+	midiIn.openPort(0);
 	//midiIn.openPort("from Max 1");
 	midiIn.ignoreTypes(false, false, false);
 	midiIn.addListener(this);
 	midiIn.setVerbose(false);
-	//snprintf (noteHolder, 6, "%06d", 0);
+	snprintf (noteHolder, 4, "%03d", 0);
 	
 	/* plain video */
-	videoPlayer.load("videos/07.mp4");
-	videoPlayer.setLoopState(OF_LOOP_NORMAL);
-	videoPlayer.setVolume(0);
-	videoPlayer.play();
+	videoPlayer.load("videos/000.mp4");
+	handleOpen();
 	/* end plain video */
 
 	/* LUT */
@@ -76,20 +53,13 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	/* Update happens on global level for all active players by HPV Manager */
-	// HPV::Update();
 	videoPlayer.update();
 
 	if(midiMessage.velocity != 0 && midiMessage.velocity != velHolder){
 		snprintf (noteHolder, 4, "%03d", midiMessage.pitch);
-
-		//std::cout<<noteHolder<<std::endl;
-		//std::cout<<midiMessage.pitch<<std::endl;
-
-		// hpvPlayer.close();
-		// if (hpvPlayer.load("videos/hpv/"+ofToString(noteHolder)+".hpv")){
-		// 	handleOpen();
-		// }
+		// cout << noteHolder << endl;
+		videoPlayer.load("videos/" + ofToString(noteHolder) + ".mp4");
+		handleOpen();
 	}
 
 	velHolder = midiMessage.velocity;
@@ -100,7 +70,6 @@ void ofApp::update(){
 		img.setFromPixels(pix);
 		img.resize(_w,_h);
 		applyLUT(img.getPixels());
-		// applyLUT(videoPlayer.getPixels());
 	}
 	/* END LUT */
 }
@@ -109,8 +78,6 @@ void ofApp::update(){
 void ofApp::draw(){
 	/* Draw the texture fullscreen */
 	ofBackground(0, 0, 0);
-	// hpvPlayer.draw(0,0,_w,_h);
-	// videoPlayer.draw(0,0,_w,_h);
 
 	/* Syphon output */
 	//mainOutputSyphonServer.publishScreen();
@@ -126,8 +93,6 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::exit(){
-    /* Cleanup and destroy HPV Engine upon exit */
-    // HPV::DestroyHPVEngine();
 }
 
 void ofApp::loadLUT(string path){
@@ -181,7 +146,6 @@ void ofApp::applyLUT(ofPixelsRef pix){
 			}			
 		}
 
-		// lutImg.resize(_w,_h);
 		lutImg.update();
 	}
 }
@@ -191,22 +155,6 @@ void ofApp::keyPressed(int key){
 	std::cout<<vidVar<<std::endl;
 
 	vidVar++;
-	//Set MAX somewhere
-	// if(vidVar > MAX-1) vidVar = 0;
-	
-	// hpvPlayer.close();
-	/*
-	if(vidVar % 2){
-		if (videoPlayer.load("videos/02.mp4")){
-			handleOpen();
-		}
-	} else {
-		// hpvPlayer.close();
-		if (videoPlayer.load("videos/01.mp4")){
-			handleOpen();
-		}
-	}
-	*/
 
 	switch (key) {
 		case ' ':
@@ -247,8 +195,6 @@ void ofApp::handleOpen(){
 	videoPlayer.setVolume(0);
 	videoPlayer.setLoopState(OF_LOOP_NORMAL);
 	videoPlayer.play();
-	// hpvPlayer.setLoopState(OF_LOOP_NORMAL);
-	// hpvPlayer.play();
 }
 
 //--------------------------------------------------------------
