@@ -8,4 +8,6 @@ wmctrl -r "hpvPlayer" -b add,above;
 `ffmpeg -i movie.mov -r 60 output/$filename%05d.bmp`
 
 
-sendmidi dev "mio MIDI 1" on 40 120; sleep 1; sendmidi dev "mio MIDI 1" off 40 0;
+sendmidi dev "mio MIDI 1" ch 4 on 40 120; sleep 1; sendmidi dev "mio MIDI 1" ch 4 off 40 0;
+sendmidi dev "IAC Driver Bus 1" ch 4 on 1 120; sleep 1; sendmidi dev "IAC Driver Bus 1" ch 4 off 1 0;
+

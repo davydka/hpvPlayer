@@ -5,6 +5,8 @@ int _w = 320;
 int _h = 320;
 int velHolder = 0;
 
+int midiChannel = 4;
+
 char noteHolder[4];
 ofPixels pix;
 ofImage img;
@@ -55,7 +57,8 @@ void ofApp::setup(){
 void ofApp::update(){
 	videoPlayer.update();
 
-	if(midiMessage.velocity != 0 && midiMessage.velocity != velHolder){
+	if(midiMessage.velocity != 0 && midiMessage.velocity != velHolder && midiMessage.channel == midiChannel){
+		cout << ofToString(midiMessage.channel) << endl;
 		snprintf (noteHolder, 4, "%03d", midiMessage.pitch);
 		// cout << noteHolder << endl;
 		videoPlayer.load("videos/" + ofToString(noteHolder) + ".mp4");
@@ -176,14 +179,18 @@ void ofApp::keyPressed(int key){
 			loadLUT(dir.getPath(dirLoadIndex));
 			break;
 		case OF_KEY_LEFT:
+			/*
 			if (videoPlayer.load("videos/06.MOV")){
 				handleOpen();
 			}
+			*/
 			break;
 		case OF_KEY_RIGHT:
+			/*
 			if (videoPlayer.load("videos/04.mp4")){
 				handleOpen();
 			}
+			*/
 			break;
 		default:
 			break;
@@ -195,31 +202,6 @@ void ofApp::handleOpen(){
 	videoPlayer.setVolume(0);
 	videoPlayer.setLoopState(OF_LOOP_NORMAL);
 	videoPlayer.play();
-}
-
-//--------------------------------------------------------------
-void ofApp::onHPVEvent(const HPVEvent& event)
-{
-	switch (event.type){
-		case HPV::HPVEventType::HPV_EVENT_PLAY:
-			cout << "'" << event.player->getFilename() << "': play event" << endl;
-			break;
-		case HPV::HPVEventType::HPV_EVENT_PAUSE:
-			cout << "'" << event.player->getFilename() << "': pause event" << endl;
-			break;
-		case HPV::HPVEventType::HPV_EVENT_RESUME:
-			cout << "'" << event.player->getFilename() << "': resume event" << endl;
-			break;
-		case HPV::HPVEventType::HPV_EVENT_STOP:
-			cout << "'" << event.player->getFilename() << "': stop event" << endl;
-			break;
-		case HPV::HPVEventType::HPV_EVENT_LOOP:
-			cout << "'" << event.player->getFilename() << "': loop event" << endl;
-			break;
-		case HPV::HPVEventType::HPV_EVENT_NUM_TYPES:
-		default:
-			break;
-	}
 }
 
 void ofApp::newMidiMessage(ofxMidiMessage& msg) {
