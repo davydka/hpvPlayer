@@ -105,11 +105,13 @@ void ofApp::update(){
 	velHolder = midiMessage.velocity;
 
 	/* LUT */
-	if (doLUT) {
-		pix = videoPlayer.getPixels();
-		img.setFromPixels(pix);
-		img.resize(_w,_h);
-		applyLUT(img.getPixels());
+	if (videoPlayer.isFrameNew()){
+		if (doLUT) {
+			pix = videoPlayer.getPixels();
+			img.setFromPixels(pix);
+			img.resize(_w,_h);
+			applyLUT(img.getPixels());
+		}
 	}
 	/* END LUT */
 }
@@ -244,6 +246,7 @@ void ofApp::keyPressed(int key){
 		case '8':
 		case '9':
 			snprintf (vidVar, 4, "%03d", key - 48);
+
 			videoPlayer.load("videos/" + videosFolder + ofToString(vidVar) + ".mp4");
 			handleOpen();
 			break;
