@@ -4,8 +4,11 @@ int vidVar;
 int _w = 320;
 int _h = 320;
 int velHolder = 0;
+int velHolderV = 0;
 
 int midiChannel = 4;
+int midiPgm = 0;
+std::string videosFolder = "00_golden_clone/";
 
 char noteHolder[4];
 ofPixels pix;
@@ -25,7 +28,7 @@ void ofApp::setup(){
 	//mainOutputSyphonServer.setName("Screen Output");
 
 	midiIn.listPorts();
-	midiIn.openPort(0);
+	midiIn.openPort(1);
 	//midiIn.openPort("from Max 1");
 	midiIn.ignoreTypes(false, false, false);
 	midiIn.addListener(this);
@@ -33,7 +36,7 @@ void ofApp::setup(){
 	snprintf (noteHolder, 4, "%03d", 0);
 	
 	/* plain video */
-	videoPlayer.load("videos/000.mp4");
+	videoPlayer.load("videos/box.mp4");
 	handleOpen();
 	/* end plain video */
 
@@ -57,11 +60,44 @@ void ofApp::setup(){
 void ofApp::update(){
 	videoPlayer.update();
 
+	// Pgm Changes
+	if(midiMessage.status == 192 && midiMessage.value != midiPgm && midiMessage.channel == midiChannel) {
+	// if(midiMessage.status == 192 && midiMessage.value != midiPgm) {
+	// if(midiMessage.velocity != 0 && midiMessage.velocity != velHolderV && midiMessage.channel == 4){
+		cout << midiMessage.status << endl;
+		cout << midiMessage.value << endl;
+		cout << midiMessage.channel << endl;
+
+		midiPgm = midiMessage.value;
+		
+		if(midiPgm == 0){
+			videosFolder = "00_golden_clone/";
+		}
+		else if(midiPgm == 1){
+			videosFolder = "01_bloomblahs/";
+		}
+		else if(midiPgm == 2){
+			videosFolder = "02_drag_race/";
+		}
+		else if(midiPgm == 3){
+			videosFolder = "03_higher_ups/";
+		}
+		else if(midiPgm == 4){
+			videosFolder = "04_weekend_trip/";
+		}
+
+		cout << videosFolder << endl;
+		snprintf (noteHolder, 4, "%03d", 0);
+		videoPlayer.load("videos/" + videosFolder + ofToString(noteHolder) + ".mp4");
+		handleOpen();
+	}
+
+	// Note events
 	if(midiMessage.velocity != 0 && midiMessage.velocity != velHolder && midiMessage.channel == midiChannel){
 		cout << ofToString(midiMessage.channel) << endl;
 		snprintf (noteHolder, 4, "%03d", midiMessage.pitch);
 		// cout << noteHolder << endl;
-		videoPlayer.load("videos/" + ofToString(noteHolder) + ".mp4");
+		videoPlayer.load("videos/" + videosFolder + ofToString(noteHolder) + ".mp4");
 		handleOpen();
 	}
 
