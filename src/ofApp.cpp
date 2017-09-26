@@ -1,6 +1,7 @@
 #include "ofApp.h"
 
-int vidVar;
+// int vidVar;
+char vidVar[4];
 int _w = 320;
 int _h = 320;
 int velHolder = 0;
@@ -193,8 +194,6 @@ void ofApp::applyLUT(ofPixelsRef pix){
 void ofApp::keyPressed(int key){
 	std::cout<<vidVar<<std::endl;
 
-	vidVar++;
-
 	switch (key) {
 		case ' ':
 			doLUT^=true;
@@ -216,17 +215,37 @@ void ofApp::keyPressed(int key){
 			break;
 		case OF_KEY_LEFT:
 			/*
-			if (videoPlayer.load("videos/06.MOV")){
-				handleOpen();
+			vidVar--;
+			if(vidVar < 0){
+				vidVar = 9;
 			}
+			videoPlayer.load("videos/" + videosFolder + ofToString(vidVar) + ".mp4");
+			handleOpen();
 			*/
 			break;
 		case OF_KEY_RIGHT:
 			/*
-			if (videoPlayer.load("videos/04.mp4")){
-				handleOpen();
+			vidVar++;
+			if(vidVar > 9){
+				vidVar = 0;
 			}
+			videoPlayer.load("videos/" + videosFolder + ofToString(vidVar) + ".mp4");
+			handleOpen();
 			*/
+			break;
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			snprintf (vidVar, 4, "%03d", key - 48);
+			videoPlayer.load("videos/" + videosFolder + ofToString(vidVar) + ".mp4");
+			handleOpen();
 			break;
 		default:
 			break;
