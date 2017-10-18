@@ -4,6 +4,7 @@
 char vidVar[4];
 int _w = 320;
 int _h = 320;
+int pitchHolder = 0;
 int velHolder = 0;
 int velHolderV = 0;
 
@@ -61,48 +62,6 @@ void ofApp::setup(){
 void ofApp::update(){
 	videoPlayer.update();
 
-	// Pgm Changes
-	if(midiMessage.status == 192 && midiMessage.value != midiPgm && midiMessage.channel == midiChannel) {
-	// if(midiMessage.status == 192 && midiMessage.value != midiPgm) {
-	// if(midiMessage.velocity != 0 && midiMessage.velocity != velHolderV && midiMessage.channel == 4){
-		cout << midiMessage.status << endl;
-		cout << midiMessage.value << endl;
-		cout << midiMessage.channel << endl;
-
-		midiPgm = midiMessage.value;
-		
-		if(midiPgm == 0){
-			videosFolder = "00_golden_clone/";
-		}
-		else if(midiPgm == 1){
-			videosFolder = "01_bloomblahs/";
-		}
-		else if(midiPgm == 2){
-			videosFolder = "02_drag_race/";
-		}
-		else if(midiPgm == 3){
-			videosFolder = "03_higher_ups/";
-		}
-		else if(midiPgm == 4){
-			videosFolder = "04_weekend_trip/";
-		}
-
-		cout << videosFolder << endl;
-		snprintf (noteHolder, 4, "%03d", 0);
-		videoPlayer.load("videos/" + videosFolder + ofToString(noteHolder) + ".mp4");
-		handleOpen();
-	}
-
-	// Note events
-	if(midiMessage.velocity != 0 && midiMessage.velocity != velHolder && midiMessage.channel == midiChannel){
-		cout << ofToString(midiMessage.channel) << endl;
-		snprintf (noteHolder, 4, "%03d", midiMessage.pitch);
-		// cout << noteHolder << endl;
-		videoPlayer.load("videos/" + videosFolder + ofToString(noteHolder) + ".mp4");
-		handleOpen();
-	}
-
-	velHolder = midiMessage.velocity;
 
 	/* LUT */
 	if (videoPlayer.isFrameNew()){
@@ -124,13 +83,15 @@ void ofApp::draw(){
 	/* Syphon output */
 	//mainOutputSyphonServer.publishScreen();
 
-	/* LUT */
-	if(doLUT){
-		lutImg.draw(0,0,_w,_h);
-	}else {
-		videoPlayer.draw(0,0,_w,_h);
+	if(videoPlayer.isLoaded()){
+		/* LUT */
+		if(doLUT){
+			lutImg.draw(0,0,_w,_h);
+		}else {
+			videoPlayer.draw(0,0,_w,_h);
+		}
+		/* END LUT */
 	}
-	/* END LUT */
 }
 
 //--------------------------------------------------------------
@@ -264,4 +225,48 @@ void ofApp::handleOpen(){
 
 void ofApp::newMidiMessage(ofxMidiMessage& msg) {
 	midiMessage = msg;
+
+	// Pgm Changes
+	if(midiMessage.status == 192 && midiMessage.value != midiPgm && midiMessage.channel == midiChannel) {
+		cout << midiMessage.status << endl;
+		cout << midiMessage.value << endl;
+		cout << midiMessage.channel << endl;
+
+		midiPgm = midiMessage.value;
+		
+		if(midiPgm == 0){
+			videosFolder = "00_golden_clone/";
+		}
+		else if(midiPgm == 1){
+			videosFolder = "01_bloomblahs/";
+		}
+		else if(midiPgm == 2){
+			videosFolder = "02_drag_race/";
+		}
+		else if(midiPgm == 3){
+			videosFolder = "03_higher_ups/";
+		}
+		else if(midiPgm == 4){
+			videosFolder = "04_weekend_trip/";
+		}
+
+		cout << videosFolder << endl;
+		snprintf (noteHolder, 4, "%03d", 0);
+		videoPlayer.load("videos/" + videosFolder + ofToString(noteHolder) + ".mp4");
+		handleOpen();
+	}
+
+	// Note events
+	if(midiMessage.velocity != 0 && midiMessage.channel == midiChannel){
+		cout << ofToString(midiMessage.channel) << endl;
+		cout << ofToString(midiMessage.pitch) << endl;
+
+		pitchHolder = midiMessage.pitch;
+		snprintf (noteHolder, 4, "%03d", midiMessage.pitch);
+		// cout << noteHolder << endl;
+		videoPlayer.load("videos/" + videosFolder + ofToString(noteHolder) + ".mp4");
+		handleOpen();
+	}
+
+	velHolder = midiMessage.velocity;
 }
